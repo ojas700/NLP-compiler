@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLP COMPILER — Deterministic Natural Language to C Compilation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <style id="landing-master-styles">
+/* ==========================================================================
+   NLP COMPILER — Landing Page Master Stylesheet
+   Design Language: Linear / Cursor / Vercel Engineering Aesthetic
+   ========================================================================== */
+
+:root {
+    --bg-primary: #08090c;
+    --bg-secondary: #0f1218;
+    --bg-tertiary: #161a22;
+    --bg-elevated: #1c222c;
+    
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.16);
+    --border-accent: rgba(59, 130, 246, 0.4);
+
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+
+    --accent-blue: #3b82f6;
+    --accent-cyan: #06b6d4;
+    --accent-emerald: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-rose: #f43f5e;
+
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Devanagari', 'Noto Sans Tamil', 'Noto Sans Telugu', sans-serif;
+    --font-serif: 'Newsreader', Georgia, serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, 'Courier New', monospace;
+
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+}
+
+body.light-theme {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f1f5f9;
+    --bg-elevated: #e2e8f0;
+
+    --border-color: rgba(0, 0, 0, 0.08);
+    --border-hover: rgba(0, 0, 0, 0.16);
+    --border-accent: rgba(37, 99, 235, 0.4);
+
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+
+    --accent-blue: #2563eb;
+    --accent-cyan: #0891b2;
+    --accent-emerald: #059669;
+    --accent-amber: #d97706;
+    --accent-rose: #e11d48;
+}
+
+body.light-theme .site-header {
+    background-color: rgba(248, 250, 252, 0.9);
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .brand-text {
+    color: #0f172a;
+}
+
+body.light-theme .nav-link {
+    color: #475569;
+}
+
+body.light-theme .nav-link:hover {
+    color: #0f172a;
+}
+
+body.light-theme .btn-theme-nav {
+    border-color: rgba(0, 0, 0, 0.12);
+    color: #475569;
+}
+
+body.light-theme .btn-theme-nav:hover {
+    background-color: #f1f5f9;
+    color: #0f172a;
+}
+
+body.light-theme .cta-nav-button {
+    background-color: #f1f5f9;
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #0f172a;
+}
+
+body.light-theme .cta-nav-button:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    color: #ffffff;
+}
+
+body.light-theme .terminal-banner {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+body.light-theme .term-header {
+    background-color: #f8fafc;
+    border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .term-title {
+    color: #64748b;
+}
+
+body.light-theme .term-status-pill {
+    background-color: rgba(37, 99, 235, 0.08);
+    color: #2563eb;
+    border-color: rgba(37, 99, 235, 0.2);
+}
+
+body.light-theme .term-body {
+    background-color: #ffffff;
+}
+
+body.light-theme .trace-cmd {
+    color: #0f172a;
+}
+
+body.light-theme .trace-msg {
+    color: #334155;
+}
+
+body.light-theme .card {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+body.light-theme .card:hover {
+    border-color: rgba(0, 0, 0, 0.16);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+body.light-theme .card-warning {
+    background-color: rgba(245, 158, 11, 0.04);
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+body.light-theme .card-success {
+    background-color: rgba(16, 185, 129, 0.04);
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+body.light-theme .stage-card {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .stage-card:hover,
+body.light-theme .stage-card.stage-active {
+    background-color: #f8fafc;
+    border-color: #2563eb;
+}
+
+body.light-theme .stage-card h3 {
+    color: #0f172a;
+}
+
+body.light-theme .walkthrough-wrapper {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .stage-sidebar {
+    background-color: #f8fafc;
+    border-right-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .stage-sidebar h4 {
+    color: #0f172a;
+}
+
+body.light-theme .stage-content {
+    background-color: #f1f5f9;
+}
+
+body.light-theme .code-box {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .code-box pre {
+    color: #0f172a;
+}
+
+body.light-theme .walkthrough-nav {
+    background-color: #f8fafc;
+    border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .btn-walkthrough-nav {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.12);
+    color: #0f172a;
+}
+
+body.light-theme .btn-walkthrough-nav:hover:not(:disabled) {
+    background-color: #f1f5f9;
+}
+
+body.light-theme .btn-secondary-hero {
+    background-color: #ffffff;
+    border-color: rgba(0, 0, 0, 0.12);
+    color: #0f172a;
+}
+
+body.light-theme .btn-secondary-hero:hover {
+    background-color: #f1f5f9;
+}
+
+body.light-theme .final-cta-card {
+    background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+
+body.light-theme .final-cta-card h2 {
+    color: #0f172a;
+}
+
+body.light-theme .site-footer {
+    border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.icon-svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   NAVIGATION HEADER
+   ========================================================================== */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    background-color: rgba(8, 9, 12, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-color);
+    z-index: 100;
+}
+
+body.light-theme .site-header {
+    background-color: rgba(248, 250, 252, 0.85);
+}
+
+.header-inner {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0.85rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    user-select: none;
+    text-decoration: none;
+}
+
+.brand-glyph {
+    color: var(--accent-blue);
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.brand-text {
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+}
+
+.brand-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    background-color: rgba(59, 130, 246, 0.12);
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.05em;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: color 0.15s;
+}
+
+.nav-link:hover {
+    color: var(--text-primary);
+}
+
+.btn-theme-nav {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-theme-nav:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.theme-svg {
+    width: 15px;
+    height: 15px;
+}
+
+.cta-nav-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    transition: all 0.15s;
+}
+
+.cta-nav-button:hover {
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
+}
+
+/* ==========================================================================
+   HERO OPENING SEQUENCE WITH REFINED ANIMATIONS
+   ========================================================================== */
+
+.hero-section {
+    padding: 5rem 0 3.5rem 0;
+    position: relative;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+/* Staggered Entrance Keyframes */
+.animate-enter {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: hero-fade-up 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.enter-1 { animation-delay: 0.05s; }
+.enter-2 { animation-delay: 0.15s; }
+.enter-3 { animation-delay: 0.25s; }
+.enter-4 { animation-delay: 0.35s; }
+.enter-5 { animation-delay: 0.45s; }
+
+@keyframes hero-fade-up {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--accent-blue);
+    margin-bottom: 1.5rem;
+}
+
+.badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--accent-blue);
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    max-width: 850px;
+}
+
+.title-em, .title-gradient {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--accent-blue);
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: var(--accent-blue);
+}
+
+.hero-subtext {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 750px;
+    line-height: 1.7;
+    margin-bottom: 2.2rem;
+    text-align: left;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3.5rem;
+    justify-content: flex-start;
+    margin-left: 0;
+}
+
+.btn-primary-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--accent-emerald);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 0.65rem 1.4rem;
+    border-radius: var(--radius-md);
+    box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+    transition: transform 0.15s, filter 0.15s;
+}
+
+.btn-primary-hero:hover {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+
+.btn-secondary-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 0.65rem 1.25rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    transition: all 0.15s;
+}
+
+.btn-secondary-hero:hover {
+    background-color: var(--bg-tertiary);
+    border-color: var(--border-hover);
+}
+
+/* Hero Terminal Preview */
+.terminal-banner {
+    width: 100%;
+    max-width: 880px;
+    background-color: #07090d;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    text-align: left;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.term-header {
+    height: 38px;
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    gap: 0.85rem;
+}
+
+.term-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.term-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.term-dot.red { background-color: #ff5f56; }
+.term-dot.yellow { background-color: #ffbd2e; }
+.term-dot.green { background-color: #27c93f; }
+
+.term-title {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    flex: 1;
+}
+
+.term-status-pill {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--accent-emerald);
+    background-color: rgba(16, 185, 129, 0.12);
+    padding: 0.1rem 0.45rem;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+}
+
+.term-body {
+    padding: 1.15rem 1.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.8;
+}
+
+.trace-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.trace-prompt {
+    color: var(--accent-emerald);
+    font-weight: 700;
+}
+
+.trace-cmd {
+    color: #ffffff;
+}
+
+.trace-tag {
+    font-weight: 700;
+    font-size: 0.72rem;
+    padding: 0.05rem 0.35rem;
+    border-radius: 3px;
+}
+
+.tag-ai { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+.tag-il { background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); }
+.tag-comp { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
+.tag-ir { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+.tag-c { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
+
+.trace-msg {
+    color: var(--text-secondary);
+}
+
+.trace-success {
+    color: var(--accent-emerald);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.35rem;
+}
+
+/* ==========================================================================
+   SECTIONS & TECHNICAL PRINCIPLES
+   ========================================================================== */
+
+.section {
+    padding: 5rem 0;
+}
+
+.section-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent-blue);
+    margin-bottom: 0.6rem;
+}
+
+.section-heading {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+}
+
+.section-sub {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin-bottom: 2.5rem;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+}
+
+.card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+}
+
+.card-warning .card-icon {
+    background-color: rgba(244, 63, 94, 0.12);
+    color: var(--accent-rose);
+}
+
+.card-success .card-icon {
+    background-color: rgba(16, 185, 129, 0.12);
+    color: var(--accent-emerald);
+}
+
+.card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+}
+
+.card p {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.65;
+}
+
+/* ==========================================================================
+   10-STAGE SCROLL STORYTELLING TIMELINE
+   ========================================================================== */
+
+.story-timeline-wrapper {
+    position: relative;
+    padding-left: 2rem;
+    margin-top: 2rem;
+}
+
+.timeline-line-track {
+    position: absolute;
+    left: 7px;
+    top: 20px;
+    bottom: 20px;
+    width: 2px;
+    background-color: var(--border-color);
+}
+
+.timeline-line-progress {
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to bottom, var(--accent-blue), var(--accent-emerald));
+    transition: height 0.2s ease-out;
+}
+
+.stages-timeline-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.stage-card {
+    position: relative;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.35rem 1.5rem;
+    display: flex;
+    gap: 1.25rem;
+    transition: transform 0.25s, border-color 0.25s, background-color 0.25s;
+}
+
+.stage-card:hover, .stage-card.stage-active {
+    border-color: var(--accent-blue);
+    background-color: var(--bg-tertiary);
+    transform: translateX(4px);
+}
+
+.stage-indicator {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--accent-blue);
+    background-color: rgba(59, 130, 246, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.stage-info {
+    flex: 1;
+}
+
+.stage-info h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.stage-info p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.65rem;
+}
+
+.stage-code-pill {
+    display: inline-block;
+    background-color: #07090d;
+    border: 1px solid var(--border-color);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent-cyan);
+}
+
+/* ==========================================================================
+   INTERACTIVE WALKTHROUGH TABS
+   ========================================================================== */
+
+.walkthrough-wrapper {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    margin-top: 1.5rem;
+}
+
+.walkthrough-stage {
+    display: none;
+    grid-template-columns: 280px 1fr;
+    min-height: 360px;
+}
+
+.walkthrough-stage.active {
+    display: grid;
+}
+
+.stage-sidebar {
+    background-color: var(--bg-tertiary);
+    border-right: 1px solid var(--border-color);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.stage-badge {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.stage-sidebar h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.stage-sidebar p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.stage-content {
+    background-color: #05070a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.code-box {
+    background-color: #0a0d14;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.code-box-header {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.4rem 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+.code-box pre {
+    padding: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    line-height: 1.65;
+    color: #e2e8f0;
+    overflow-x: auto;
+}
+
+.input-val {
+    color: var(--accent-emerald);
+    font-weight: 700;
+}
+
+.walkthrough-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    background-color: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.walkthrough-counter {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.btn-walkthrough-nav {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.4rem 0.9rem;
+    border-radius: var(--radius-md);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-walkthrough-nav:hover:not(:disabled) {
+    color: var(--text-primary);
+    background-color: var(--bg-tertiary);
+}
+
+.btn-walkthrough-nav.primary {
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: #ffffff;
+}
+
+.btn-walkthrough-nav.primary:hover:not(:disabled) {
+    filter: brightness(1.1);
+}
+
+.btn-walkthrough-nav:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   FINAL CTA CARD & FOOTER
+   ========================================================================== */
+
+.final-cta {
+    padding: 6rem 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.final-cta-card {
+    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: 3.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.final-cta-card h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.75rem;
+}
+
+.final-cta-card p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+}
+
+.cta-button-large {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--accent-emerald);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.8rem 1.8rem;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+    transition: transform 0.15s, filter 0.15s;
+}
+
+.cta-button-large:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+
+.site-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 2.25rem 0;
+    font-size: 0.84rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.footer-meta {
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   SCROLL REVEAL UTILITY (INTERSECTION OBSERVER)
+   ========================================================================== */
+
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .animate-enter, .scroll-reveal {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
+}
+
+/* Mobile & Tablet Responsiveness */
+@media (max-width: 768px) {
+    .hero-title { font-size: 2.4rem; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .walkthrough-stage { grid-template-columns: 1fr; }
+    .stage-sidebar { border-right: none; border-bottom: 1px solid var(--border-color); }
+    .footer-content { flex-direction: column; gap: 0.75rem; text-align: center; }
+}
+
+    </style>
+    <script>
+        (function() {
+            try {
+                var savedTheme = localStorage.getItem('app-theme') || 'dark';
+                if (savedTheme === 'light') {
+                    document.documentElement.classList.add('light-theme');
+                }
+            } catch(e) {}
+        })();
+    </script>
+</head>
+<body class="landing-body dark-theme">
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <span class="brand-glyph">λ</span>
+                <span class="brand-text">NLP COMPILER</span>
+                <span class="brand-badge">STUDIO</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#novelty" class="nav-link">Novelty</a>
+                <a href="#pipeline" class="nav-link">10-Stage Pipeline</a>
+                <a href="#walkthrough" class="nav-link">Trace Walkthrough</a>
+                <button id="theme-toggle" type="button" class="btn-theme-nav" title="Toggle Light / Dark Theme" aria-label="Toggle Light or Dark Theme">
+                    <svg class="theme-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                </button>
+                <a href="/ide" class="cta-nav-button">
+                    <span>Open Studio</span>
+                    <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section with Staggered Entrance Animations -->
+        <section class="hero-section">
+            <div class="container hero-content">
+                <h1 class="hero-title animate-enter enter-1">
+                    Natural Language Front-End.<br>
+                    <span class="title-em">Deterministic</span> Compiler Pipeline.
+                </h1>
+                
+                <p class="hero-subtext animate-enter enter-2">
+                    A hybrid architecture decoupling human intent understanding from deterministic program compilation.
+                    Natural English is extracted into structured JSON intent and Intermediate Language (IL), then passed
+                    through conventional Lexical, Syntactic, Semantic, IR, and GCC compilation stages with live interactive execution.
+                </p>
+                
+                <div class="hero-actions animate-enter enter-3">
+                    <a href="/ide" class="btn-primary-hero">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16" style="width:16px;height:16px;max-width:16px;max-height:16px;display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                        <span>Launch Compiler Studio</span>
+                    </a>
+                    <a href="#pipeline" class="btn-secondary-hero">
+                        <span>Explore Pipeline</span>
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+                    </a>
+                </div>
+
+                <!-- Hero Live Trace Preview Card -->
+                <div class="terminal-banner animate-enter enter-4">
+                    <div class="term-header">
+                        <div class="term-dots">
+                            <span class="term-dot red"></span>
+                            <span class="term-dot yellow"></span>
+                            <span class="term-dot green"></span>
+                        </div>
+                        <span class="term-title">compiler_pipeline_trace — gcc 14.2.0 (x86_64-w64-mingw32)</span>
+                        <span class="term-status-pill">DETERMINISTIC</span>
+                    </div>
+                    <div class="term-body">
+                        <div class="trace-row"><span class="trace-prompt">&gt;</span> <span class="trace-cmd">"Ask the user for two numbers, add them and display the result."</span></div>
+                        <div class="trace-row"><span class="trace-tag tag-ai">[NLU]</span> <span class="trace-msg">Qwen 2.5 3B local interpretation &rarr; Schema-verified Intent AST</span></div>
+                        <div class="trace-row"><span class="trace-tag tag-il">[IL]</span> <span class="trace-msg">Synthesized Intermediate Language: DECLARE, READ, ASSIGN, PRINT</span></div>
+                        <div class="trace-row"><span class="trace-tag tag-comp">[COMPILER]</span> <span class="trace-msg">Lexer: 7 tokens | Parser: Recursive descent 100% | Semantic: 0 errors</span></div>
+                        <div class="trace-row"><span class="trace-tag tag-ir">[IR]</span> <span class="trace-msg">Emitted 4 Three-Address Code Quadruples (Memory: 1000, 1004, 1008)</span></div>
+                        <div class="trace-row"><span class="trace-tag tag-c">[CODEGEN]</span> <span class="trace-msg">Strict ANSI C source generated &rarr; GCC compiled native binary (0.04s)</span></div>
+                        <div class="trace-row trace-success"><svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> <span>Live Subprocess Initialized: Ready for interactive stdin/stdout</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Clarification / Contrast Section -->
+        <section id="novelty" class="section tech-principles">
+            <div class="container">
+                <div class="section-label">THE CORE NOVELTY</div>
+                <h2 class="section-heading">Why Decouple AI Interpretation from Compilation?</h2>
+                <div class="grid-2">
+                    <div class="card card-warning scroll-reveal">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </div>
+                        <h3>The Flaw of Direct LLM Code Generation</h3>
+                        <p>
+                            Asking an LLM to generate C code directly produces hallucinations, subtle buffer overruns,
+                            unverifiable semantic bugs, and zero formal grammatical guarantees. Large language models are probabilistic;
+                            compilers require absolute mathematical determinism.
+                        </p>
+                    </div>
+                    <div class="card card-success scroll-reveal">
+                        <div class="card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <h3>The NLP Compiler Solution</h3>
+                        <p>
+                            Restrict the LLM solely to human intent understanding. The model outputs only compact, schema-validated
+                            intent JSON. From that boundary onward, 100% deterministic compiler phases take control: formal symbol tables,
+                            semantic type checking, three-address quadruples, and verified C code generation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10-Stage Pipeline Scroll Storytelling Section -->
+        <section id="pipeline" class="section pipeline-story-section">
+            <div class="container">
+                <div class="section-label">END-TO-END SPECIFICATION</div>
+                <h2 class="section-heading">Ten Distinct Compiler Stages</h2>
+                <p class="section-sub">
+                    Every instruction progresses through a verifiable, step-by-step pipeline from unstructured human thought to native machine code.
+                </p>
+
+                <!-- Interactive Scroll Timeline Track -->
+                <div class="story-timeline-wrapper">
+                    <div class="timeline-line-track">
+                        <div class="timeline-line-progress" id="timeline-progress"></div>
+                    </div>
+
+                    <div class="stages-timeline-grid">
+                        
+                        <!-- Stage 1 -->
+                        <div class="stage-card scroll-reveal" data-stage="1">
+                            <div class="stage-indicator">01</div>
+                            <div class="stage-info">
+                                <h3>Natural Language Input</h3>
+                                <p>Free-form natural English or spoken voice instructions from the user.</p>
+                                <div class="stage-code-pill">"Ask the user for two numbers, add them and display the result."</div>
+                            </div>
+                        </div>
+
+                        <!-- Stage 2 -->
+                        <div class="stage-card scroll-reveal" data-stage="2">
+                            <div class="stage-indicator">02</div>
+                            <div class="stage-info">
+                                <h3>Qwen 2.5 3B Local NLU</h3>
+                                <p>Zero external API calls. Fully local, privacy-preserving intent extraction via Ollama.</p>
+                                <div class="stage-code-pill">Low-temperature (0.1) deterministic intent mapping</div>
+                            </div>
+                        </div>
+
+                        <!-- Stage 3 -->
+                        <div class="stage-card scroll-reveal" data-stage="3">
+                            <div class="stage-indicator">03</div>
+                            <div class="stage-info">
+                                <h3>Structured Intent AST</h3>
+                                <p>Strict JSON schema ensuring only valid operations (declare, read, assign, print) pass through.</p>
+                                <div class="stage-code-pill">{"action": "assign", "name": "sum", "value": "num1 + num2"}</div>
+                            </div>
+                        </div>
+
+                        <!-- Stage 4 -->
+                        <div class="stage-card scroll-reveal" data-stage="4">
+                            <div class="stage-indicator">04</div>
+                            <div class="stage-info">
+                                <h3>Intermediate Language (IL)</h3>
+                                <p>The mathematical contract separating NLP from formal compiler construction.</p>
+                                <div class="stage-code-pill">DECLARE INT num1 &bull; READ num1 &bull; ASSIGN sum num1 + num2</div>
+                            </div>
+                        </div>
+
+                        <!-- Stage 5 -->
+                        <div class="stage-card scroll-reveal" data-stage="5">
+                            <div class="stage-indicator">05</div>
+                            <div class="stage-info">
+                                <h3>Lexical &amp; Syntactic Analysis</h3>
+                                <p>Deterministic Lexer tokenization &amp; Recursive Descent Parser grammar validation.</p>
+                                <div class="stage-code-pill">Token stream: [DECLARE, TYPE_INT, IDENTIFIER, READ, ...]</div>
+                            </div>
+                        </div>
+
+                        <!-- Stage 6 -->
+                        <div class="stage-card scroll-reveal" data-stage="6">
+                            <div class="stage-indicator">06</div>
+                            <div class="stage-info">
+                                <h3>Symbol Table Management</h3>
+                                <p>Memory address allocation (1000, 1004, 1008), Line of Declaration (LOD), and Line of Use (LOU).</p>
+                                <div class="stage-code-pill">num1 (Addr 1000), num2 (Addr 1004), sum (Addr 1008)</div>
+                            </div>
+                        </div>
+
+                        <!-- Stage 7 -->
+                        <div class="stage-card scroll-reveal" data-stage="7">
+                            <div class="stage-indicator">07</div>
+                            <div class="stage-info">
+                                <h3>Semantic Verification</h3>
+                                <p>Ensures undeclared variable prevention, type consistency, and block scoping safety.</p>
+                                <div class="stage-code-pill">Semantic errors: 0 | Type checks: PASS</div>
+                            </div>
+                        </div>
+
+                        <!-- Stage 8 -->
+                        <div class="stage-card scroll-reveal" data-stage="8">
+                            <div class="stage-indicator">08</div>
+                            <div class="stage-info">
+                                <h3>Three-Address Quadruples (IR)</h3>
+                                <p>Linear intermediate representations ready for formal compiler optimization.</p>
+                                <div class="stage-code-pill">1: READ - - num1 | 3: ASSIGN num1+num2 - sum</div>
+                            </div>
+                        </div>
+
+                        <!-- Stage 9 -->
+                        <div class="stage-card scroll-reveal" data-stage="9">
+                            <div class="stage-indicator">09</div>
+                            <div class="stage-info">
+                                <h3>ANSI C Source Code Generation</h3>
+                                <p>Deterministic, readable, unbuffered C code emitted for native execution.</p>
+                                <div class="stage-code-pill">setvbuf(stdout, NULL, _IONBF, 0); int num1 = 0; ...</div>
+                            </div>
+                        </div>
+
+                        <!-- Stage 10 -->
+                        <div class="stage-card scroll-reveal" data-stage="10">
+                            <div class="stage-indicator">10</div>
+                            <div class="stage-info">
+                                <h3>MinGW GCC Execution &amp; Live Terminal</h3>
+                                <p>Real native binary compilation with bidirectional stdin/stdout streaming over WebSocket.</p>
+                                <div class="stage-code-pill">Subprocess Exit Code: 0 (Execution Success)</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Walkthrough Section -->
+        <section id="walkthrough" class="section walkthrough-section">
+            <div class="container">
+                <div class="section-label">PIPELINE TRACE</div>
+                <h2 class="section-heading">Step-by-Step Execution Walkthrough</h2>
+                <p class="section-sub">
+                    Step through the actual compiler data structures for a sample instruction.
+                </p>
+
+                <div class="walkthrough-wrapper scroll-reveal">
+                    <!-- Stage 1 -->
+                    <div class="walkthrough-stage active" data-step="1">
+                        <div class="stage-sidebar">
+                            <span class="stage-badge">STAGE 1 / 6</span>
+                            <h4>Natural English Input</h4>
+                            <p>Free-form natural phrasing entered by the user or spoken via Voice-to-Code.</p>
+                        </div>
+                        <div class="stage-content">
+                            <div class="code-box">
+                                <div class="code-box-header">User Input</div>
+                                <pre><code>"Ask the user for two numbers, add them and display the result."</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 2 -->
+                    <div class="walkthrough-stage" data-step="2">
+                        <div class="stage-sidebar">
+                            <span class="stage-badge">STAGE 2 / 6</span>
+                            <h4>Structured Intent AST</h4>
+                            <p>Extracted by local Qwen 2.5 3B with rigid JSON schema validation.</p>
+                        </div>
+                        <div class="stage-content">
+                            <div class="code-box">
+                                <div class="code-box-header">Schema-Validated Intent JSON</div>
+                                <pre><code>{
+  "instructions": [
+    {"action": "declare", "type": "INT", "name": "num1"},
+    {"action": "read", "name": "num1"},
+    {"action": "declare", "type": "INT", "name": "num2"},
+    {"action": "read", "name": "num2"},
+    {"action": "assign", "name": "sum", "value": "num1 + num2"},
+    {"action": "print", "value": "sum"}
+  ]
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 3 -->
+                    <div class="walkthrough-stage" data-step="3">
+                        <div class="stage-sidebar">
+                            <span class="stage-badge">STAGE 3 / 6</span>
+                            <h4>Intermediate Language</h4>
+                            <p>The formal IL dividing the probabilistic and deterministic compiler phases.</p>
+                        </div>
+                        <div class="stage-content">
+                            <div class="code-box">
+                                <div class="code-box-header">Intermediate Language (IL)</div>
+                                <pre><code>DECLARE INT num1
+READ num1
+DECLARE INT num2
+READ num2
+DECLARE INT sum
+ASSIGN sum num1 + num2
+PRINT sum</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 4 -->
+                    <div class="walkthrough-stage" data-step="4">
+                        <div class="stage-sidebar">
+                            <span class="stage-badge">STAGE 4 / 6</span>
+                            <h4>Symbol Table &amp; IR</h4>
+                            <p>Deterministic memory addresses, LOD, LOU, and Three-Address Quadruples.</p>
+                        </div>
+                        <div class="stage-content">
+                            <div class="code-box">
+                                <div class="code-box-header">Symbol Table &amp; IR Quadruples</div>
+                                <pre><code>Name    Type   Address  Scope   LOD  LOU  Status
+num1    INT    1000     Global  1    5    Active
+num2    INT    1004     Global  3    5    Active
+sum     INT    1008     Global  5    6    Active
+
+IR QUADRUPLES:
+1: READ    -         -     num1
+2: READ    -         -     num2
+3: ASSIGN  num1+num2 -     sum
+4: PRINT   -         -     sum</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 5 -->
+                    <div class="walkthrough-stage" data-step="5">
+                        <div class="stage-sidebar">
+                            <span class="stage-badge">STAGE 5 / 6</span>
+                            <h4>Deterministic ANSI C</h4>
+                            <p>Clean C source emitted with explicit line-buffered interactive stdio.</p>
+                        </div>
+                        <div class="stage-content">
+                            <div class="code-box">
+                                <div class="code-box-header">output/generated.c</div>
+                                <pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main() {
+    setvbuf(stdout, NULL, _IONBF, 0);
+    int num1 = 0;
+    int num2 = 0;
+    int sum = 0;
+    printf("Enter num1: "); fflush(stdout);
+    if (scanf("%d", &num1) != 1) return 0;
+    printf("Enter num2: "); fflush(stdout);
+    if (scanf("%d", &num2) != 1) return 0;
+    sum = num1 + num2;
+    printf("Result: %d\n", sum);
+    return 0;
+}</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stage 6 -->
+                    <div class="walkthrough-stage" data-step="6">
+                        <div class="stage-sidebar">
+                            <span class="stage-badge">STAGE 6 / 6</span>
+                            <h4>Native Execution</h4>
+                            <p>Compiled by GCC with interactive stdin/stdout streaming to the browser terminal.</p>
+                        </div>
+                        <div class="stage-content">
+                            <div class="code-box term-box">
+                                <div class="code-box-header">Subprocess Terminal Output</div>
+                                <pre><code>Enter num1: <span class="input-val">15</span>
+Enter num2: <span class="input-val">25</span>
+Result: 40
+
+[Process exited with status 0]</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="walkthrough-nav">
+                    <button id="wt-prev" class="btn-walkthrough-nav">&larr; Previous</button>
+                    <span id="wt-indicator" class="walkthrough-counter">Stage 1 of 6</span>
+                    <button id="wt-next" class="btn-walkthrough-nav primary">Next &rarr;</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section class="section final-cta">
+            <div class="container text-center">
+                <div class="final-cta-card scroll-reveal">
+                    <h2>Ready to Experience the Compiler?</h2>
+                    <p>Enter any natural English programming instruction or speak with Voice-to-Code.</p>
+                    <a href="/ide" class="cta-button-large">
+                        <span>Launch NLP Compiler Studio</span>
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <span class="brand-glyph">λ</span>
+                <span><strong>NLP COMPILER</strong> &mdash; Deterministic Compiler Design</span>
+            </div>
+            <div class="footer-meta">Built with C (MinGW GCC), Python (FastAPI), Qwen 2.5 3B (Ollama).</div>
+        </div>
+    </footer>
+
+    <script src="/landing.js?v=2.6"></script>
+</body>
+</html>

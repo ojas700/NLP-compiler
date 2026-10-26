@@ -1,0 +1,69 @@
+===============================
+AI-NLP Compiler Language v1.0
+===============================
+
+VARIABLES
+----------
+Create an integer variable <name>.
+Create a float variable <name>.
+Create a character variable <name>.
+
+ASSIGNMENT
+----------
+Assign <value> to <name>.
+
+INPUT
+-----
+Read <name>.
+
+OUTPUT
+------
+Display <name>.
+Print <name>.
+
+CONDITIONS
+----------
+If <condition>.
+Else.
+End If.
+
+LOOPS
+-----
+Repeat <number> times.
+End Repeat.
+
+For <variable> from <start> to <end>.
+End For.
+
+WHILE
+-----
+While <condition>.
+End While.
+
+ARRAYS
+------
+Create an array <name> of size <n>.
+
+FUNCTIONS
+---------
+Create a function <name>.
+Call <name>.
+
+DATA STRUCTURES
+---------------
+Create a stack.
+Create a queue.
+Create a linked list.
+Create a BST.
+Create an AVL tree.
+
+OPERATIONS
+----------
+Push <value>.
+Pop.
+Enqueue <value>.
+Dequeue.
+Insert <value>.
+Delete <value>.
+Search <value>.
+Display.

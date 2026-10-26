@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLP COMPILER — Deterministic AI-to-C Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="ide.css?v=2.3">
+    <link rel="stylesheet" href="/static/ide.css">
+    <style id="ide-master-styles">
+/* ==========================================================================
+   NLP COMPILER STUDIO — Modern Developer IDE Stylesheet
+   Design System: Linear / Cursor / Raycast Precision Engineering
+   ========================================================================== */
+
+:root {
+    /* Color Palette - Dark Theme (Default) */
+    --bg-canvas: #090b10;
+    --bg-surface: #0f131a;
+    --bg-elevated: #161b24;
+    --bg-active: #1c222e;
+    --bg-input: #0b0e14;
+    
+    --border-subtle: rgba(255, 255, 255, 0.07);
+    --border-medium: rgba(255, 255, 255, 0.12);
+    --border-accent: rgba(59, 130, 246, 0.5);
+    
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-code: #e2e8f0;
+
+    --accent-blue: #3b82f6;
+    --accent-cyan: #06b6d4;
+    --accent-emerald: #10b981;
+    --accent-amber: #f59e0b;
+    --accent-rose: #f43f5e;
+    
+    --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Devanagari', 'Noto Sans Tamil', 'Noto Sans Telugu', sans-serif;
+    --font-code: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, 'Courier New', monospace;
+
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+
+    --transition-fast: 0.15s ease;
+    --transition-smooth: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light Theme Variables */
+body.light-theme {
+    --bg-canvas: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-elevated: #f1f5f9;
+    --bg-active: #e2e8f0;
+    --bg-input: #ffffff;
+
+    --border-subtle: rgba(0, 0, 0, 0.08);
+    --border-medium: rgba(0, 0, 0, 0.15);
+    --border-accent: rgba(37, 99, 235, 0.5);
+
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --text-code: #1e293b;
+
+    --accent-blue: #2563eb;
+    --accent-cyan: #0891b2;
+    --accent-emerald: #059669;
+    --accent-amber: #d97706;
+    --accent-rose: #e11d48;
+}
+
+/* Base Reset & Typography */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+}
+
+body.is-resizing {
+    user-select: none !important;
+}
+
+/* Universal SVG Icon Alignment */
+.icon-svg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   TOP NAVIGATION BAR
+   ========================================================================== */
+
+.ide-topbar {
+    height: 52px;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    z-index: 100;
+    gap: 1rem;
+}
+
+.topbar-left, .topbar-center, .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.topbar-divider {
+    width: 1px;
+    height: 18px;
+    background-color: var(--border-subtle);
+}
+
+/* Navigation Back Link */
+.nav-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.35rem 0.6rem;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.nav-back-link:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-elevated);
+}
+
+/* Brand Lockup */
+.brand-lockup {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    user-select: none;
+}
+
+.brand-symbol {
+    font-family: var(--font-code);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    line-height: 1;
+}
+
+.brand-name {
+    font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+}
+
+.brand-pill {
+    font-size: 0.72rem;
+    font-weight: 700;
+    background-color: rgba(59, 130, 246, 0.15);
+    color: var(--accent-blue);
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.05em;
+}
+
+/* Preset Examples Dropdown */
+.preset-pill-group {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background-color: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-md);
+}
+
+.preset-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.preset-dropdown {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding-right: 1.35rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.preset-dropdown option {
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+}
+
+.select-chevron {
+    position: absolute;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+/* Topbar Center: Run Pipeline Action */
+.btn-primary-run {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--accent-emerald);
+    color: #ffffff;
+    border: none;
+    font-family: var(--font-ui);
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(16, 185, 129, 0.3);
+    transition: opacity var(--transition-fast), transform var(--transition-fast), filter var(--transition-fast);
+}
+
+.btn-primary-run:hover {
+    filter: brightness(1.08);
+}
+
+.btn-primary-run:active {
+    transform: scale(0.98);
+}
+
+.btn-primary-run:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.run-glyph {
+    width: 11px;
+    height: 11px;
+}
+
+.kbd-shortcut {
+    font-family: var(--font-code);
+    font-size: 0.76rem;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 0.42rem 0.85rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: color var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.btn-ghost:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-elevated);
+    border-color: var(--border-medium);
+}
+
+/* Topbar Right: Status Badge & Utility Buttons */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background-color: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    font-size: 0.82rem;
+    font-family: var(--font-code);
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--text-muted);
+}
+
+.status-badge.status-idle .status-dot { background-color: var(--text-muted); }
+.status-badge.status-running .status-dot { background-color: var(--accent-amber); animation: pulse-dot 1.2s infinite; }
+.status-badge.status-success .status-dot { background-color: var(--accent-emerald); }
+.status-badge.status-error .status-dot { background-color: var(--accent-rose); }
+
+@keyframes pulse-dot {
+    0% { transform: scale(0.9); opacity: 0.6; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+.btn-icon-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 0.86rem;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+}
+
+.btn-icon-toggle:hover, .btn-icon-toggle.active {
+    color: var(--text-primary);
+    background-color: var(--bg-elevated);
+    border-color: var(--border-medium);
+}
+
+.btn-theme-switch {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-theme-switch:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-elevated);
+}
+
+.theme-svg {
+    width: 15px;
+    height: 15px;
+}
+
+/* ==========================================================================
+   WORKSPACE ROOT & SPLIT PANE ARCHITECTURE
+   ========================================================================== */
+
+.ide-workspace-root {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 52px);
+    width: 100vw;
+    overflow: hidden;
+    background-color: var(--bg-canvas);
+    position: relative;
+}
+
+/* Top Split Editor Area */
+.workspace-editor-row {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    min-height: 180px;
+}
+
+/* Editor Panes (Left Input & Right C Code) */
+.editor-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-surface);
+    overflow: hidden;
+    min-width: 280px;
+    position: relative;
+}
+
+.pane-header {
+    height: 42px;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.85rem;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.pane-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.pane-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--text-muted);
+}
+
+.file-badge-c {
+    font-family: var(--font-code);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    background-color: rgba(6, 182, 212, 0.12);
+    padding: 0.08rem 0.35rem;
+    border-radius: 3px;
+}
+
+.pane-title {
+    font-family: var(--font-code);
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.pane-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pane-body {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.pane-input .pane-body {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 42px);
+}
+
+.pane-input .code-textarea {
+    flex: 1;
+    min-height: 120px;
+    height: auto;
+}
+
+/* Textarea Code Input */
+.code-textarea {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: var(--font-code);
+    font-size: 1.02rem;
+    line-height: 1.7;
+    padding: 1.15rem 1.35rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.code-textarea::placeholder {
+    color: var(--text-muted);
+    font-style: italic;
+    opacity: 0.6;
+}
+
+/* Right Editor: Generated C Code View */
+.code-body-relative {
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.code-editor-view {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: var(--bg-input);
+    color: var(--text-code);
+    font-family: var(--font-code);
+    font-size: 1.02rem;
+    line-height: 1.7;
+    padding: 1.15rem 1.35rem;
+    margin: 0;
+    white-space: pre;
+    tab-size: 4;
+    font-variant-ligatures: none !important;
+    font-feature-settings: "liga" 0, "calt" 0 !important;
+}
+
+/* Disable font ligatures across all code editors and monospace inspectors to display literal syntax (e.g. != instead of ≠) */
+pre, code, .code-editor-view, .code-textarea, .code-view-plain, .term-display {
+    font-variant-ligatures: none !important;
+    font-feature-settings: "liga" 0, "calt" 0 !important;
+}
+
+/* Header Buttons in Panes */
+.btn-header-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background-color: var(--bg-elevated);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.3rem 0.65rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-header-action:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-active);
+    border-color: var(--border-medium);
+}
+
+.btn-explain {
+    color: var(--accent-blue);
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+.btn-explain:hover {
+    background-color: rgba(59, 130, 246, 0.2);
+    border-color: var(--accent-blue);
+    color: #ffffff;
+}
+
+/* ==========================================================================
+   VOICE-TO-CODE PILL CONTROL
+   ========================================================================== */
+
+.voice-input-pill {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 1px;
+    transition: border-color var(--transition-fast);
+}
+
+.voice-select-inline {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: var(--font-code);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.2rem 0.45rem;
+    outline: none;
+    cursor: pointer;
+    border-right: 1px solid var(--border-subtle);
+}
+
+.voice-select-inline option {
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+}
+
+.btn-voice-record {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-family: var(--font-ui);
+    font-size: 0.84rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.btn-voice-record:hover {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.mic-glyph {
+    width: 12px;
+    height: 12px;
+}
+
+.recording-pulse {
+    display: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--accent-rose);
+    box-shadow: 0 0 8px var(--accent-rose);
+}
+
+/* Recording Active State */
+.btn-voice-record.recording {
+    color: var(--accent-rose);
+    background-color: rgba(244, 63, 94, 0.15);
+}
+
+.btn-voice-record.recording .recording-pulse {
+    display: inline-block;
+    animation: mic-pulse 1s infinite alternate;
+}
+
+@keyframes mic-pulse {
+    0% { transform: scale(0.85); opacity: 0.6; }
+    100% { transform: scale(1.25); opacity: 1; }
+}
+
+/* ==========================================================================
+   ROBUST RESIZERS (DIVIDERS WITH INVISIBLE GRAB HIT-AREAS)
+   ========================================================================== */
+
+/* Horizontal Split Divider */
+.resizer-divider-h {
+    width: 1px;
+    background-color: var(--border-subtle);
+    position: relative;
+    cursor: col-resize;
+    z-index: 40;
+    transition: background-color var(--transition-fast);
+    flex-shrink: 0;
+}
+
+/* Invisible 14px grab area */
+.resizer-divider-h::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -6px;
+    width: 13px;
+    z-index: 50;
+    cursor: col-resize;
+}
+
+.resizer-divider-h:hover, .resizer-divider-h.dragging {
+    background-color: var(--accent-blue);
+    box-shadow: 0 0 6px rgba(59, 130, 246, 0.6);
+}
+
+/* Vertical Split Divider (Workbench) */
+.resizer-divider-v {
+    height: 1px;
+    background-color: var(--border-subtle);
+    position: relative;
+    cursor: row-resize;
+    z-index: 40;
+    transition: background-color var(--transition-fast);
+    flex-shrink: 0;
+}
+
+/* Invisible 14px grab area */
+.resizer-divider-v::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -6px;
+    height: 13px;
+    z-index: 50;
+    cursor: row-resize;
+}
+
+.resizer-divider-v:hover, .resizer-divider-v.dragging {
+    background-color: var(--accent-blue);
+    box-shadow: 0 0 6px rgba(59, 130, 246, 0.6);
+}
+
+/* ==========================================================================
+   CONTEXTUAL BILINGUAL EXPLANATION DRAWER
+   ========================================================================== */
+
+.explanation-drawer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 480px;
+    max-width: 95%;
+    background-color: var(--bg-elevated);
+    border-left: 1px solid var(--border-medium);
+    display: flex;
+    flex-direction: column;
+    z-index: 60;
+    box-shadow: -8px 0 28px rgba(0, 0, 0, 0.4);
+    transform: translateX(100%);
+    transition: transform var(--transition-smooth);
+    pointer-events: none;
+}
+
+/* Explain Language Selection & Confirmation Card */
+.explain-config-card {
+    background-color: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-top: 0.25rem;
+}
+
+.config-card-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: block;
+}
+
+.explain-lang-radios {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+
+.lang-radio-tile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.lang-radio-tile:hover {
+    border-color: var(--border-accent);
+    background-color: var(--bg-elevated);
+}
+
+.lang-radio-tile input[type="radio"] {
+    accent-color: var(--accent-blue);
+    cursor: pointer;
+    width: 15px;
+    height: 15px;
+}
+
+.tile-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.tile-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.tile-subtitle {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+}
+
+.config-actions-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.35rem;
+}
+
+.btn-primary-explain {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    background-color: var(--accent-blue);
+    color: #ffffff;
+    border: none;
+    font-family: var(--font-ui);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-primary-explain:hover:not(:disabled) {
+    filter: brightness(1.12);
+}
+
+.btn-primary-explain:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-ghost-explain {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 0.5rem 0.85rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-ghost-explain:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-elevated);
+    border-color: var(--border-medium);
+}
+
+.explanation-active-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background-color: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: var(--accent-blue);
+    font-size: 0.84rem;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    margin-bottom: 1.15rem;
+}
+
+.active-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--accent-blue);
+}
+
+.explanation-drawer.open {
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.drawer-header {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    background-color: var(--bg-surface);
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.drawer-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.drawer-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.drawer-heading .accent-blue {
+    color: var(--accent-blue);
+}
+
+.drawer-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.drawer-close-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.drawer-close-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-elevated);
+}
+
+.drawer-lang-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lang-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.drawer-lang-select {
+    flex: 1;
+    background-color: var(--bg-canvas);
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
+    padding: 0.3rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-family: var(--font-ui);
+    font-weight: 500;
+    outline: none;
+}
+
+.drawer-content {
+    flex: 1;
+    padding: 1.25rem;
+    overflow-y: auto;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+}
+
+.drawer-content h3, .drawer-content h4 {
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin: 1rem 0 0.4rem 0;
+}
+
+.drawer-content h3:first-child, .drawer-content h4:first-child {
+    margin-top: 0;
+}
+
+.drawer-content p, .drawer-content ul {
+    margin-bottom: 0.75rem;
+}
+
+.drawer-content ul {
+    padding-left: 1.2rem;
+}
+
+.drawer-content li {
+    margin-bottom: 0.35rem;
+}
+
+.drawer-content code {
+    background-color: var(--bg-surface);
+    color: var(--accent-cyan);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    font-family: var(--font-code);
+    font-size: 0.92rem;
+}
+
+.explain-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--text-muted);
+    gap: 0.75rem;
+}
+
+.empty-icon {
+    width: 32px;
+    height: 32px;
+    opacity: 0.4;
+}
+
+.explain-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    gap: 0.85rem;
+    color: var(--accent-blue);
+    font-family: var(--font-code);
+    font-size: 0.82rem;
+}
+
+.explain-spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-medium);
+    border-top: 2px solid var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.explain-error-card {
+    background-color: rgba(244, 63, 94, 0.08);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    color: var(--accent-rose);
+    font-size: 0.9rem;
+}
+
+.explanation-markdown-body {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+}
+
+.explanation-markdown-body h3, .explanation-markdown-body h4 {
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    margin: 1.1rem 0 0.45rem 0;
+}
+
+.explanation-markdown-body h3:first-child, .explanation-markdown-body h4:first-child {
+    margin-top: 0;
+}
+
+.explanation-markdown-body p {
+    margin-bottom: 0.85rem;
+    color: var(--text-primary);
+}
+
+.explanation-markdown-body ul {
+    list-style-type: disc;
+    padding-left: 1.35rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.explanation-markdown-body li {
+    line-height: 1.75;
+    color: var(--text-primary);
+}
+
+.explanation-markdown-body strong {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+body.light-theme .explanation-markdown-body strong {
+    color: #0f172a;
+}
+
+.explanation-markdown-body code {
+    background-color: var(--bg-canvas);
+    border: 1px solid var(--border-subtle);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-code);
+    font-size: 0.92rem;
+    color: var(--accent-cyan);
+}
+
+.explain-timer-text {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-family: var(--font-code);
+}
+
+/* ==========================================================================
+   COLLAPSIBLE WORKBENCH DOCK (CONSOLE / TERMINAL / INSPECT)
+   ========================================================================== */
+
+.workbench-dock {
+    height: 260px;
+    background-color: var(--bg-surface);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    transition: height var(--transition-fast);
+}
+
+.workbench-dock.collapsed {
+    height: 40px !important;
+}
+
+.workbench-tabbar {
+    height: 42px;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.85rem;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.workbench-tabs {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 0.25rem;
+}
+
+.workbench-tab-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 0 0.9rem;
+    cursor: pointer;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.workbench-tab-btn:hover {
+    color: var(--text-secondary);
+}
+
+.workbench-tab-btn.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent-blue);
+    font-weight: 600;
+}
+
+.tab-icon {
+    width: 12px;
+    height: 12px;
+}
+
+.workbench-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-danger-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background-color: rgba(244, 63, 94, 0.15);
+    color: var(--accent-rose);
+    border: 1px solid rgba(244, 63, 94, 0.4);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-danger-sm:hover {
+    background-color: var(--accent-rose);
+    color: #ffffff;
+}
+
+.btn-workbench-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.btn-workbench-icon:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-elevated);
+}
+
+.btn-workbench-icon svg {
+    transition: transform var(--transition-smooth);
+    transform-origin: 50% 50%;
+}
+
+/* Arrow points UP when console is hidden/collapsed */
+.workbench-dock.collapsed .btn-workbench-icon svg,
+.workbench-dock.collapsed #btn-minimize-dock svg {
+    transform: rotate(180deg);
+}
+
+.workbench-body {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--bg-canvas);
+}
+
+.workbench-pane {
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.workbench-pane.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Terminal Shell */
+.terminal-shell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #05070a;
+    font-family: var(--font-code);
+}
+
+.terminal-stdout {
+    flex: 1;
+    padding: 0.85rem 1.15rem;
+    font-size: 0.98rem;
+    line-height: 1.65;
+    overflow-y: auto;
+    color: #f1f5f9;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.term-greeting {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.term-out-stdout { color: #f1f5f9; }
+.term-out-stderr { color: var(--accent-rose); }
+.term-out-stdin { color: var(--accent-emerald); font-weight: 600; }
+.term-out-system { color: var(--accent-cyan); font-weight: 500; }
+
+/* Terminal Stdin Bar */
+.terminal-stdin-row {
+    height: 42px;
+    background-color: #0b0e14;
+    border-top: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    padding: 0 0.85rem;
+    gap: 0.5rem;
+}
+
+.term-prompt-chevron {
+    color: var(--accent-emerald);
+    font-weight: 700;
+    font-size: 0.9rem;
+    font-family: var(--font-code);
+}
+
+#term-stdin-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #f1f5f9;
+    font-family: var(--font-code);
+    font-size: 0.96rem;
+}
+
+#term-stdin-input:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-stdin-send {
+    background-color: var(--bg-elevated);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
+    font-family: var(--font-ui);
+    font-size: 0.84rem;
+    font-weight: 600;
+    padding: 0.28rem 0.7rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-stdin-send:hover:not(:disabled) {
+    color: var(--text-primary);
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+.btn-stdin-send:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Raw Previews for Logs, IL, Intent */
+.code-view-plain {
+    padding: 1rem 1.15rem;
+    font-family: var(--font-code);
+    font-size: 0.96rem;
+    line-height: 1.65;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin: 0;
+}
+
+/* ==========================================================================
+   SCROLLBAR REFINEMENT
+   ========================================================================== */
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.24);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.28);
+}
+
+/* ==========================================================================
+   CONVERSATIONAL PROGRAMMING COMPACT DOCK
+   ========================================================================== */
+
+.conv-dock {
+    border-top: 1px solid var(--border-subtle);
+    background-color: var(--bg-surface);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+}
+
+.conv-dock-header {
+    height: 38px;
+    padding: 0 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--bg-elevated);
+    border-bottom: 1px solid var(--border-subtle);
+    user-select: none;
+}
+
+.conv-dock-title {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.conv-sparkle-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--accent-cyan);
+}
+
+.conv-turn-count-badge {
+    font-family: var(--font-code);
+    font-size: 0.74rem;
+    background: rgba(6, 182, 212, 0.15);
+    color: var(--accent-cyan);
+    padding: 0.1rem 0.45rem;
+    border-radius: 100px;
+    font-weight: 600;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.conv-dock-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-conv-tool {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    padding: 0.22rem 0.55rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-conv-tool:hover:not(:disabled) {
+    background: var(--bg-active);
+    color: var(--text-primary);
+    border-color: var(--border-medium);
+}
+
+.btn-conv-tool:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-conv-tool.btn-conv-run {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.35);
+    color: #10b981;
+    font-weight: 600;
+}
+
+.btn-conv-tool.btn-conv-run:hover:not(:disabled) {
+    background: rgba(16, 185, 129, 0.22);
+    border-color: rgba(16, 185, 129, 0.6);
+    color: #34d399;
+}
+
+.conv-history-feed {
+    max-height: 110px;
+    overflow-y: auto;
+    padding: 0.45rem 0.85rem;
+    background-color: var(--bg-input);
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 0.84rem;
+}
+
+.conv-history-empty {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-style: italic;
+    padding: 0.2rem 0;
+}
+
+.conv-turn-chip {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+    line-height: 1.45;
+}
+
+.conv-turn-tag {
+    font-family: var(--font-code);
+    font-size: 0.72rem;
+    padding: 0.05rem 0.35rem;
+    border-radius: 3px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.conv-turn-tag.user {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--accent-blue);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.conv-turn-tag.assistant {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--accent-emerald);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.conv-turn-tag.clarify {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--accent-amber);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.conv-turn-tag.error {
+    background: rgba(244, 63, 94, 0.15);
+    color: var(--accent-rose);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.conv-turn-text {
+    flex: 1;
+    color: var(--text-primary);
+    word-break: break-word;
+}
+
+.conv-diff-pill {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-family: var(--font-code);
+    color: var(--accent-emerald);
+    background: rgba(16, 185, 129, 0.1);
+    padding: 0.05rem 0.35rem;
+    border-radius: 3px;
+    margin-left: 0.35rem;
+}
+
+.conv-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.85rem;
+    background-color: var(--bg-surface);
+}
+
+.conv-input-wrapper {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.conv-text-input {
+    width: 100%;
+    height: 34px;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    padding: 0 2rem 0 0.75rem;
+    outline: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.conv-text-input:focus {
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.15);
+}
+
+.conv-text-input::placeholder {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.btn-conv-voice {
+    position: absolute;
+    right: 5px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+}
+
+.btn-conv-voice:hover {
+    color: var(--accent-rose);
+    background: rgba(244, 63, 94, 0.1);
+}
+
+.btn-conv-voice.recording {
+    color: var(--accent-rose);
+    animation: pulse-dot 1.2s infinite;
+}
+
+.btn-conv-send {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 34px;
+    padding: 0 0.85rem;
+    background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-ui);
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.btn-conv-send:hover:not(:disabled) {
+    opacity: 0.95;
+    transform: translateY(-1px);
+}
+
+.btn-conv-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+    </style>
+</head>
+<body class="ide-body dark-theme">
+
+    <!-- IDE Master Header / Navigation Bar -->
+    <header class="ide-topbar">
+        <div class="topbar-left">
+            <a href="/" class="nav-back-link" title="Return to Overview">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                <span>Overview</span>
+            </a>
+            <div class="topbar-divider"></div>
+            <div class="brand-lockup">
+                <span class="brand-symbol">λ</span>
+                <span class="brand-name">NLP COMPILER</span>
+                <span class="brand-pill">STUDIO</span>
+            </div>
+            <div class="topbar-divider"></div>
+            <!-- Preset Selector -->
+            <div class="preset-pill-group">
+                <label for="example-select" class="preset-label">Preset:</label>
+                <div class="select-wrapper">
+                    <select id="example-select" class="preset-dropdown">
+                        <option value="user_input" selected>Custom Prompt</option>
+                        <option value="add">Add Two Numbers (Interactive)</option>
+                        <option value="even_odd">Check Even or Odd</option>
+                        <option value="loop_sum">Sum 1 to N (Loop)</option>
+                        <option value="temperature">Convert Celsius to Fahrenheit</option>
+                    </select>
+                    <svg class="select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="topbar-center">
+            <!-- Primary Execution Controls -->
+            <button id="btn-run" class="btn-primary-run" title="Compile natural language into C and execute (Ctrl+Enter)">
+                <svg class="run-glyph" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="width:14px;height:14px;max-width:14px;max-height:14px;display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                <span>Run Pipeline</span>
+                <kbd class="kbd-shortcut">Ctrl+↵</kbd>
+            </button>
+            <button id="btn-clear" class="btn-ghost" title="Reset editors and terminal">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                <span>Clear</span>
+            </button>
+        </div>
+
+        <div class="topbar-right">
+            <!-- Pipeline Live Status Badge -->
+            <div id="pipeline-status-badge" class="status-badge status-idle">
+                <span class="status-dot"></span>
+                <span id="pipeline-status-text" class="status-text">Ready</span>
+            </div>
+            
+            <div class="topbar-divider"></div>
+
+            <!-- Toggle Console Drawer Button -->
+            <button id="btn-toggle-workbench" class="btn-icon-toggle active" title="Toggle Bottom Console / Terminal">
+                <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 15h18"/></svg>
+                <span class="btn-text">Console</span>
+            </button>
+
+            <!-- Theme Toggle -->
+            <button id="theme-toggle" class="btn-theme-switch" title="Toggle Light / Dark Mode">
+                <svg id="theme-icon-sun" class="theme-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Master Workspace Layout -->
+    <div class="ide-workspace-root" id="workspace">
+
+        <!-- Top Area: Split Code Editors -->
+        <div class="workspace-editor-row" id="editor-row">
+
+            <!-- LEFT PANE: Natural Language Specification -->
+            <section class="editor-pane pane-input" id="panel-input">
+                <div class="pane-header">
+                    <div class="pane-title-group">
+                        <svg class="pane-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        <span class="pane-title" id="panel-input-title">Natural Language Input</span>
+                    </div>
+
+                    <div class="pane-actions">
+                        <!-- Voice-to-Code Pill Component -->
+                        <div class="voice-input-pill" id="voice-pill">
+                            <select id="voice-lang-select" class="voice-select-inline" title="Speech Recognition Language">
+                                <option value="en-US">EN</option>
+                                <option value="hi-IN">HI</option>
+                                <option value="ta-IN">TA</option>
+                                <option value="te-IN">TE</option>
+                            </select>
+                            <button id="btn-voice" class="btn-voice-record" title="Click to speak natural language instructions">
+                                <span class="recording-pulse"></span>
+                                <svg class="mic-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                                <span id="voice-label" class="voice-btn-text">Speak</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pane-body">
+                    <textarea id="editor-input" class="code-textarea" spellcheck="false" placeholder="Type instructions in natural English...
+Example: Ask the user for two numbers, add them and display the result."></textarea>
+
+                    <!-- Conversational Refinement Dock -->
+                    <div class="conv-dock" id="conv-dock">
+                        <div class="conv-dock-header">
+                            <div class="conv-dock-title">
+                                <svg class="conv-sparkle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
+                                <span>Conversational Refinement</span>
+                                <span class="conv-turn-count-badge" id="conv-turn-badge" style="display:none;">Turn 1</span>
+                            </div>
+                            <div class="conv-dock-actions">
+                                <button id="btn-conv-run" class="btn-conv-tool btn-conv-run" title="Run current program in interactive terminal" disabled>
+                                    <svg viewBox="0 0 24 24" fill="currentColor" width="11" height="11" style="width:11px;height:11px;max-width:11px;max-height:11px;display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                    <span>Run Program</span>
+                                </button>
+                                <button id="btn-conv-undo" class="btn-conv-tool" title="Undo last program modification" disabled>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" style="width:13px;height:13px;max-width:13px;max-height:13px;display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg>
+                                    <span>Undo</span>
+                                </button>
+                                <button id="btn-conv-reset" class="btn-conv-tool" title="Reset conversation & start a new program">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13" style="width:13px;height:13px;max-width:13px;max-height:13px;display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M12 2v4"/><path d="m16.2 7.8 2.9-2.9"/><path d="M18 12h4"/><path d="m16.2 16.2 2.9 2.9"/><path d="M12 18v4"/><path d="m4.9 19.1 2.9-2.9"/><path d="M2 12h4"/><path d="m4.9 4.9 2.9 2.9"/></svg>
+                                    <span>New Program</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Active Turn History Chips / Status Banner -->
+                        <div class="conv-history-feed" id="conv-history-feed">
+                            <div class="conv-history-empty" id="conv-history-empty">
+                                <span>Compile an initial program above or ask a follow-up modification below.</span>
+                            </div>
+                            <div class="conv-turns-stream" id="conv-turns-stream" style="display:none;"></div>
+                        </div>
+
+                        <!-- Follow-up input row -->
+                        <div class="conv-input-row">
+                            <div class="conv-input-wrapper">
+                                <input type="text" id="conv-input" class="conv-text-input" placeholder="Ask follow-up (e.g. 'Also print their difference', 'Rename to total', 'Undo')..." autocomplete="off">
+                                <button id="btn-conv-voice" class="btn-conv-voice" title="Speak follow-up instruction">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="width:14px;height:14px;max-width:14px;max-height:14px;display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>
+                                </button>
+                            </div>
+                            <button id="btn-conv-send" class="btn-conv-send" title="Send conversational update (Enter)">
+                                <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="width:14px;height:14px;max-width:14px;max-height:14px;display:inline-block;vertical-align:middle;flex-shrink:0;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                <span>Update</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Horizontal Resizer Divider between Input and C Code -->
+            <div class="resizer-divider-h" id="resizer-h" title="Drag to adjust editor widths"></div>
+
+            <!-- RIGHT PANE: Generated C Code + Contextual Explanation Drawer -->
+            <section class="editor-pane pane-c" id="panel-c">
+                <div class="pane-header">
+                    <div class="pane-title-group">
+                        <span class="file-badge-c">C</span>
+                        <span class="pane-title">output/generated.c</span>
+                    </div>
+
+                    <div class="pane-actions">
+                        <!-- Explain Code Button -->
+                        <button id="btn-explain" class="btn-header-action btn-explain" title="Explain Generated C Code in your preferred language">
+                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            <span>Explain Code</span>
+                        </button>
+                        
+                        <!-- Copy C Code Button -->
+                        <button id="btn-copy-c" class="btn-header-action" title="Copy C Source to Clipboard">
+                            <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                            <span id="copy-c-text">Copy</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="pane-body code-body-relative">
+                    <!-- Deterministic C Code Display -->
+                    <pre id="view-c-code" class="code-editor-view">/* NLP COMPILER — Deterministic Generated C */
+// Click "Run Pipeline" to synthesize C code from natural language.</pre>
+
+                    <!-- CONTEXTUAL BILINGUAL EXPLANATION DRAWER (Sliding Inspector Sheet) -->
+                    <!-- CONTEXTUAL BILINGUAL EXPLANATION DRAWER (Sliding Inspector Sheet) -->
+                    <aside class="explanation-drawer" id="drawer-explain" aria-hidden="true">
+                        <div class="drawer-header">
+                            <div class="drawer-title-row">
+                                <div class="drawer-heading">
+                                    <svg class="icon-svg accent-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="width:16px;height:16px;max-width:16px;max-height:16px;display:inline-block;vertical-align:middle;flex-shrink:0;"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                                    <span>Bilingual Code Explanation</span>
+                                </div>
+                                <button id="btn-close-explain" class="drawer-close-btn" title="Close explanation view (Esc)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" style="width:15px;height:15px;max-width:15px;max-height:15px;display:inline-block;vertical-align:middle;flex-shrink:0;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                </button>
+                            </div>
+
+                            <!-- Dedicated Language Selection & Confirmation Card -->
+                            <div class="explain-config-card" id="explain-config-card">
+                                <span class="config-card-title">Choose Explanation Language:</span>
+                                <div class="explain-lang-radios">
+                                    <label class="lang-radio-tile">
+                                        <input type="radio" name="explain-lang" value="english" checked>
+                                        <span class="tile-content">
+                                            <span class="tile-title">English</span>
+                                            <span class="tile-subtitle">Technical Breakdown</span>
+                                        </span>
+                                    </label>
+                                    <label class="lang-radio-tile">
+                                        <input type="radio" name="explain-lang" value="hindi">
+                                        <span class="tile-content">
+                                            <span class="tile-title">Hindi</span>
+                                            <span class="tile-subtitle">हिंदी विवरण</span>
+                                        </span>
+                                    </label>
+                                    <label class="lang-radio-tile">
+                                        <input type="radio" name="explain-lang" value="tamil">
+                                        <span class="tile-content">
+                                            <span class="tile-title">Tamil</span>
+                                            <span class="tile-subtitle">தமிழ் விளக்கம்</span>
+                                        </span>
+                                    </label>
+                                    <label class="lang-radio-tile">
+                                        <input type="radio" name="explain-lang" value="telugu">
+                                        <span class="tile-content">
+                                            <span class="tile-title">Telugu</span>
+                                            <span class="tile-subtitle">తెలుగు వివరణ</span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="config-actions-row">
+                                    <button id="btn-generate-explain" class="btn-primary-explain" title="Request Qwen 2.5 3B explanation in selected language">
+                                        <svg width="14" height="14" style="width:14px;height:14px;max-width:14px;max-height:14px;display:inline-block;vertical-align:middle;flex-shrink:0;" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                        <span>Generate Explanation</span>
+                                    </button>
+                                    <button id="btn-cancel-explain" class="btn-ghost-explain" title="Close without requesting explanation">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="drawer-content" id="view-explain">
+                            <div class="explain-empty-state" id="explain-welcome-state">
+                                <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="36" height="36" style="width:36px;height:36px;max-width:36px;max-height:36px;display:inline-block;vertical-align:middle;flex-shrink:0;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                                <p>Select your language above and click <strong>Generate Explanation</strong> to synthesize a beginner-friendly breakdown of this C program.</p>
+                            </div>
+                            <div class="explanation-body-output" id="explain-body-output" style="display:none;"></div>
+                        </div>
+                    </aside>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Vertical Resizer Divider between Editors and Console Workbench -->
+        <div class="resizer-divider-v" id="resizer-workbench" title="Drag to adjust console height"></div>
+
+        <!-- Bottom Area: Collapsible Console / Inspection Workbench -->
+        <footer class="workbench-dock" id="workbench-dock">
+            
+            <!-- Workbench Tab Bar -->
+            <div class="workbench-tabbar">
+                <div class="workbench-tabs">
+                    <button class="workbench-tab-btn active" data-tab="tab-term" id="tab-btn-term">
+                        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                        <span>Terminal (Live Execution)</span>
+                    </button>
+                    <button class="workbench-tab-btn" data-tab="tab-stages-log" id="tab-btn-log">
+                        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        <span>Compiler Log &amp; IR</span>
+                    </button>
+                    <button class="workbench-tab-btn" data-tab="tab-stages-il" id="tab-btn-il">
+                        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                        <span>Intermediate Language (IL)</span>
+                    </button>
+                    <button class="workbench-tab-btn" data-tab="tab-stages-intent" id="tab-btn-intent">
+                        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/><polyline points="14 2 14 8 20 8"/></svg>
+                        <span>Intent AST (JSON)</span>
+                    </button>
+                </div>
+
+                <div class="workbench-controls">
+                    <button id="btn-kill-proc" class="btn-danger-sm" style="display:none;" title="Terminate running subprocess">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14" style="width:14px;height:14px;max-width:14px;max-height:14px;display:inline-block;vertical-align:middle;flex-shrink:0;"><rect width="14" height="14" x="5" y="5" rx="2"/></svg>
+                        <span>Kill Process</span>
+                    </button>
+                    <button id="btn-minimize-dock" class="btn-workbench-icon" title="Minimize / Expand Workbench">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Workbench Tab Panes -->
+            <div class="workbench-body">
+
+                <!-- TAB 1: Live Interactive Terminal -->
+                <div id="tab-term" class="workbench-pane active">
+                    <div class="terminal-shell">
+                        <div id="term-display" class="terminal-stdout">
+                            <div class="term-greeting">Press <strong>"Run Pipeline"</strong> to compile and execute program with live interactive stdin/stdout.</div>
+                        </div>
+                        <div class="terminal-stdin-row">
+                            <span class="term-prompt-chevron">&gt;</span>
+                            <input type="text" id="term-stdin-input" placeholder="Type standard input and press Enter..." autocomplete="off" disabled>
+                            <button id="btn-send-stdin" class="btn-stdin-send" disabled>Send</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: Compiler Logs & Pipeline Trace -->
+                <div id="tab-stages-log" class="workbench-pane">
+                    <pre id="view-compiler-log" class="code-view-plain">No compilation run yet. Execute the pipeline to view lexical tokens, parser AST, symbol table addresses, and three-address quadruples.</pre>
+                </div>
+
+                <!-- TAB 3: Intermediate Language (IL) -->
+                <div id="tab-stages-il" class="workbench-pane">
+                    <pre id="view-il" class="code-view-plain">Intermediate Language instructions (DECLARE, READ, ASSIGN, PRINT) will appear here.</pre>
+                </div>
+
+                <!-- TAB 4: Intent AST (JSON) -->
+                <div id="tab-stages-intent" class="workbench-pane">
+                    <pre id="view-intent" class="code-view-plain">Qwen 2.5 3B structured intent JSON will appear here.</pre>
+                </div>
+
+            </div>
+
+        </footer>
+
+    </div>
+
+    <script src="/ide.js?v=2.3"></script>
+</body>
+</html>

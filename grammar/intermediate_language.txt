@@ -1,0 +1,65 @@
+=============================
+Intermediate Command Language
+=============================
+
+VARIABLES
+
+DECLARE INT <name>
+DECLARE FLOAT <name>
+DECLARE CHAR <name>
+
+ASSIGNMENT
+
+ASSIGN <name> <value>
+
+INPUT
+
+READ <name>
+
+OUTPUT
+
+PRINT <name>
+
+CONDITIONS
+
+IF <condition>
+ELSE
+END_IF
+
+LOOPS
+
+FOR <variable> <start> <end>
+END_FOR
+
+WHILE <condition>
+END_WHILE
+
+DATA STRUCTURES
+
+CREATE_STACK <name>
+CREATE_QUEUE <name>
+CREATE_LINKEDLIST <name>
+CREATE_BST <name>
+CREATE_AVL <name>
+
+STACK
+
+PUSH <stack> <value>
+POP <stack>
+
+QUEUE
+
+ENQUEUE <queue> <value>
+DEQUEUE <queue>
+
+TREES
+
+BST_INSERT <tree> <value>
+BST_DELETE <tree> <value>
+
+AVL_INSERT <tree> <value>
+AVL_DELETE <tree> <value>
+
+PRINT_INORDER <tree>
+PRINT_PREORDER <tree>
+PRINT_POSTORDER <tree>
